@@ -9,7 +9,10 @@ const catalog={
 };
 const plans={meeting:['mic','headphones','stand'],stream:['mic','light','stand','storage'],product:['light','stand','backdrop','storage'],mobile:['power','storage','stand','mic']};
 const painMap={audio:'mic',light:'light',stable:'stand',storage:'storage'};
+function recordUsage(){try{const k='amase_usage_creator_gear_router';localStorage.setItem(k,String((Number(localStorage.getItem(k))||0)+1));return true}catch{return false}}
 function unique(xs){return [...new Set(xs)]}
 function score(work,pain,budget){let xs=unique([painMap[pain],...plans[work]]);if(budget==='low')xs=xs.slice(0,3);return xs}
 function offersFor(key){return (window.AFFILIATE_OFFERS||[]).filter(x=>x.enabled&&x.category===key)}
-document.querySelector('#run').onclick=()=>{const w=work.value,p=pain.value,b=budget.value;const xs=score(w,p,b);route.innerHTML=xs.map((k,i)=>`<article class="card"><span class="rank">0${i+1}</span><h3>${catalog[k].name}</h3><p>${catalog[k].why}</p></article>`).join('');const ads=xs.flatMap(k=>offersFor(k));offers.innerHTML=ads.length?'<h2>関連候補</h2>'+ads.map(x=>`<article class="card"><a href="${x.url}" rel="sponsored nofollow noopener" target="_blank">${x.label}</a><span class="ad">広告</span><p>${x.note||''}</p></article>`).join(''):'';result.hidden=false;localStorage.setItem('amase_usage_creator_gear_router',String((Number(localStorage.getItem('amase_usage_creator_gear_router'))||0)+1));};
+document.querySelector('#run').onclick=()=>{const w=work.value,p=pain.value,b=budget.value;const xs=score(w,p,b);route.innerHTML=xs.map((k,i)=>`<article class="card"><span class="rank">0${i+1}</span><h3>${catalog[k].name}</h3><p>${catalog[k].why}</p></article>`).join('');const ads=xs.flatMap(k=>offersFor(k));offers.innerHTML=ads.length?'<h2>関連候補</h2>'+ads.map(x=>`<article class="card"><a href="${x.url}" rel="sponsored nofollow noopener" target="_blank">${x.label}</a><span class="ad">広告</span><p>${x.note||''}</p></article>`).join(''):'';result.hidden=false;recordUsage();};
+
+if(typeof module!=='undefined')module.exports={score,recordUsage};
