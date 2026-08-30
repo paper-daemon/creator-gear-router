@@ -27,9 +27,10 @@ python3 -m http.server 8000
 ```bash
 node --check app.js
 node tests/test_storage.js
+node tests/test_routing.js
 ```
 
-GitHub Actionsでもこの境界を継続確認します。
+GitHub Actionsでもstorage failure boundaryとrouting priority / low-budget capを継続確認します。
 
 ## Monetization boundary
 
